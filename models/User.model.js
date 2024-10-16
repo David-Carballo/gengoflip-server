@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
     email: {
@@ -10,10 +9,11 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true
     },
-    password: {
-      type: String,
-      required: [true, 'Password is required.']
-    }
+    password: {type: String, required: [true, 'Password is required.']},
+    username: {type: String, unique: true, required: [true, 'Username is required']},
+    firstName: {type: String, default: ""},
+    lastName: {type: String, default: ""},
+    profileImg: {type: String, default: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg'}
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    
