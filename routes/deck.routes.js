@@ -84,6 +84,7 @@ router.patch("/:deckId", async (req, res, next)=>{
 })
 
 //DELETE /api/decks/:deckId -> Delete deck and all flashcards
+//TODO check owner????
 router.delete("/:deckId", async(req,res, next) => {
   try {
     await Deck.findByIdAndDelete(req.params.deckId);
