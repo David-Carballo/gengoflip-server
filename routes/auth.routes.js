@@ -123,12 +123,4 @@ router.get("/verify", verifyToken, (req, res)=>{
   res.status(200).json(req.payload);
 });
 
-router.get("/user/perfil", verifyToken, (req, res) => {
-
-  // todas las llamadas que sean privada DEBERAN tener el verifyToken
-
-  res.json({message: "aqui tienes tu información privada"})
-
-})
-
 module.exports = router;
