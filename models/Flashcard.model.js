@@ -12,7 +12,7 @@ const flashcardSchema = new Schema({
     required: true
   },
   imageUrl: {type: String},
-  owner: {type: Schema.Types.ObjectId, ref: "User"}
+  owner: {type: Schema.Types.ObjectId, ref: "User", required: true}
 }); 
 
 const Flashcard = model("Flashcard", flashcardSchema);

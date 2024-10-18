@@ -1,19 +1,32 @@
 const router = require("express").Router();
 const Flashcard = require("../models/Flashcard.model")
-
+const {verifyToken} = require("../middlewares/auth.middlewares")
 
 //POST /api/flashcards/ -> Create new Flashcard
-router.post("/", async (req, res, next) =>{
-  const {cardName, description, originalLang, translations} = req.body
-
+router.post("/", verifyToken, async (req, res, next) =>{
+  const {cardName, description, originalLang, translations, imageUrl} = req.body
+  console.log(req.payload);
   try {
     const response = await Flashcard.create({
       cardName,
       description,
       originalLang,
-      translations
+      translations,
+      imageUrl,
+      owner: req.payload._id
     })
 
+    res.status(201).json(response);
+  } 
+  catch (error) {
+    next(error)
+  }
+})
+
+//POST MANY /api/flashcards/many -> Create new Flashcards
+router.post("/many", async (req,res,next) => {
+  try {
+    const response = await Flashcard.insertMany(req.body);
     res.status(201).json(response);
   } 
   catch (error) {
@@ -33,8 +46,8 @@ router.get("/:flashcardId", async (req, res, next) =>{
 })
 
 //PUT /api/flashcards/:flashcardId -> Update all flashcards details
-router.put("/:flashcardId", async (req, res, next) =>{
-  const {cardName, description, originalLang, translations, imageUrl, owner} = req.body
+router.put("/:flashcardId", verifyToken, async (req, res, next) =>{
+  const {cardName, description, originalLang, translations, imageUrl} = req.body
 
   try {
     const response = await Flashcard.findByIdAndUpdate(req.params.flashcardId,{
@@ -43,7 +56,7 @@ router.put("/:flashcardId", async (req, res, next) =>{
       originalLang,
       translations,
       imageUrl,
-      owner
+      owner: req.payload._id
     } ,{new:true});
     res.status(200).json(response);
   } 
@@ -53,5 +66,7 @@ router.put("/:flashcardId", async (req, res, next) =>{
 })
 
 //TODO PATCH /api/flashcards/:flashcardId -> Update all flashcards details
+
+//TODO DELETE MANY FLASHCARDS
 
 module.exports = router;

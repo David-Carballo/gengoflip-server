@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Deck = require("../models/Deck.model");
+const {verifyToken} = require("../middlewares/auth.middlewares")
 
 //All deck routes
 
@@ -28,20 +29,21 @@ router.get("/:deckId", async (req, res, next)=>{
 })
 
 //POST /api/decks/ -> {deck object} -> Create a new Deck
-router.post("/", async (req, res, next)=>{
-  const {deckName, description, tags, languages, owner} = req.body;
-  console.log(req.body)
+router.post("/", verifyToken, async (req, res, next)=>{
+  const {deckName, description, tags, languages, imageUrl, flashcards} = req.body;
+
   try {
     const newDeck = await Deck.create({
       deckName,
       description,
       tags,
       languages,
-      owner
+      imageUrl,
+      flashcards,
+      owner: req.payload._id
     })
 
     res.status(201).json(newDeck);
-    
   } 
   catch (error) {
     next(error)
@@ -50,7 +52,7 @@ router.post("/", async (req, res, next)=>{
 
 //PUT /api/decks/:deckId -> {deck object} -> Update all details of Deck
 router.put("/:deckId", async (req, res, next)=>{
-  const {deckName, description, tags, languages, savedCount, imageUrl, owner} = req.body;
+  const {deckName, description, tags, languages, savedCount, flashcards, imageUrl, owner} = req.body;
   try {
     const response = await Deck.findByIdAndUpdate(req.params.deckId, 
     {
@@ -60,6 +62,7 @@ router.put("/:deckId", async (req, res, next)=>{
       languages,
       savedCount,
       imageUrl,
+      flashcards,
       owner
     }, {new: true})
 
@@ -71,7 +74,7 @@ router.put("/:deckId", async (req, res, next)=>{
 })
 
 //TODO check necessary PATCHES(add flashcard, update savedCount)
-//PATCH /api/decks/:deckId -> {flashcards Array} -> Add new flashcards to Deck
+//PATCH /api/decks/:deckId -> {++count} -> update saved count value
 router.patch("/:deckId", async (req, res, next)=>{
   const {savedCount} = req.body
   try {
