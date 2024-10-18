@@ -8,7 +8,7 @@ const deckSchema = new Schema({
   languages: {type: [String], enum:["English", "Spanish", "French", "German", "Portuguese", "Italian"], required: [true, 'Es necesario seleccionar los lenguajes que soporta']},
   savedCount: {type: Number, default: 0},
   imageUrl: {type: String, default: "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg"},
-  // flashcards: {type: [Schema.Types.ObjectId], ref: "Flashcard"},
+  flashcards: {type: [Schema.Types.ObjectId], ref: "Flashcard"},
   owner: {type: Schema.Types.ObjectId, ref: "User"}
 });
 

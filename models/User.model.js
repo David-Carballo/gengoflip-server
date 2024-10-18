@@ -13,7 +13,12 @@ const userSchema = new Schema(
     username: {type: String, unique: true, required: [true, 'Username is required']},
     firstName: {type: String, default: ""},
     lastName: {type: String, default: ""},
-    profileImg: {type: String, default: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg'}
+    profileImg: {type: String, default: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg'},
+    deckLibrary: {type: [{_id:false,
+      deckId: {type: Schema.Types.ObjectId, ref: "Deck"},
+      passedFlashcards: {type: Number, default: 0},
+      previousLesson: {type: Date}
+    }]}
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    

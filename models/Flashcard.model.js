@@ -11,9 +11,9 @@ const flashcardSchema = new Schema({
     }],
     required: true
   },
-  imageUrl: {type: String, default: "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg"},
+  imageUrl: {type: String},
   owner: {type: Schema.Types.ObjectId, ref: "User"}
-});
+}); 
 
 const Flashcard = model("Flashcard", flashcardSchema);
 
