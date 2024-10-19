@@ -13,6 +13,17 @@ router.get("/profile", verifyToken, async (req, res, next) => {
   }
 })
 
+//GET /api/users/profile/library -> Return user's deck
+router.get("/profile/library", verifyToken, async (req, res, next) => {
+  try {
+    const response = await User.findById(req.payload._id).select({deckLibrary:1}).populate({path: "deckLibrary.deckId", model:"Deck"});
+    res.status(200).json(response);
+  } 
+  catch (error) {
+    next(error)  
+  }
+})
+
 //PUT /api/users/profile -> Update user info
 router.put("/profile", verifyToken, async (req, res, next) => {
   const {email, username, firstName, lastName, profileImg} = req.body

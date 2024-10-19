@@ -69,4 +69,16 @@ router.put("/:flashcardId", verifyToken, async (req, res, next) =>{
 
 //TODO DELETE MANY FLASHCARDS
 
+//DELETE /api/flashcards/:flashcardId -> Delete this flashcard
+router.delete("/:flashcardId", verifyToken, async (req, res, next) =>{
+
+  try {
+    await Flashcard.findByIdAndDelete(req.params.flashcardId);
+    res.sendStatus(202);
+  } 
+  catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router;
