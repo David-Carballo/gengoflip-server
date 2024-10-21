@@ -16,7 +16,7 @@ router.use("/flashcards", flashcardRouter);
 
 //Upload routes
 const uploadRoutes = require("./upload.routes");
-router.use("/upload", uploadRoutes);
+router.use("/uploads", uploadRoutes);
 
 // User routes
 const userRouter = require("./user.routes");

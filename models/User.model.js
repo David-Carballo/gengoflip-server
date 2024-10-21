@@ -17,7 +17,7 @@ const userSchema = new Schema(
     deckLibrary: {type: [{_id:false,
       deckId: {type: Schema.Types.ObjectId, ref: "Deck"},
       passedFlashcards: {type: Number, default: 0},
-      previousLesson: {type: Date}
+      previousLesson: {type: Date, default: null}
     }]}
   },
   {

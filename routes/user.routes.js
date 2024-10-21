@@ -5,7 +5,7 @@ const {verifyToken} = require("../middlewares/auth.middlewares")
 //GET /api/users/profile -> Return user info
 router.get("/profile", verifyToken, async (req, res, next) => {
   try {
-    const response = await User.findById(req.payload._id);
+    const response = await User.findById(req.payload._id).populate({path: "deckLibrary.deckId", model:"Deck"});
     res.status(200).json(response);
   } 
   catch (error) {
@@ -42,6 +42,23 @@ router.put("/profile", verifyToken, async (req, res, next) => {
     next(error)  
   }
 })
+
+//PATCH  /api/users/profile -> Update deck Library
+router.patch("/profile", verifyToken, async (req, res, next) => {
+  const newDeck = req.body
+  try {
+    const response = await User.findByIdAndUpdate(req.payload._id, {$push: {
+      deckLibrary: newDeck
+    }
+    }, {new:true});
+
+    res.status(200).json(response);
+  } 
+  catch (error) {
+    next(error)  
+  }
+})
+
 
 //DELETE /api/users/delete -> Delete account from this user
 router.delete("/delete", verifyToken, async (req, res, next) => {

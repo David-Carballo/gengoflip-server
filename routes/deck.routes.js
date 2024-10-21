@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Deck = require("../models/Deck.model");
-const {verifyToken} = require("../middlewares/auth.middlewares")
+const {verifyToken} = require("../middlewares/auth.middlewares");
+const User = require("../models/User.model");
 
 //All deck routes
 
