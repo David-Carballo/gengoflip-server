@@ -20,7 +20,7 @@ router.get("/", async (req, res, next)=>{
 //GET /api/decks/:deckId -> Returns object with deck datails and all flashcards(populate)
 router.get("/:deckId", async (req, res, next)=>{
   try {
-    const response = await Deck.findById(req.params.deckId).populate("owner");
+    const response = await Deck.findById(req.params.deckId).populate("owner").populate("flashcards");
     // console.log("Deck: ", response)
     res.status(200).json(response);
   } 
