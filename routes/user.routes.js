@@ -43,12 +43,28 @@ router.put("/profile", verifyToken, async (req, res, next) => {
   }
 })
 
-//PATCH  /api/users/profile -> Update deck Library
-router.patch("/profile", verifyToken, async (req, res, next) => {
+//PATCH  /api/users/profile -> Update deck Library adding item
+router.patch("/profile/add-deck", verifyToken, async (req, res, next) => {
   const newDeck = req.body
   try {
     const response = await User.findByIdAndUpdate(req.payload._id, {$push: {
       deckLibrary: newDeck
+    }
+    }, {new:true});
+
+    res.status(200).json(response);
+  } 
+  catch (error) {
+    next(error)  
+  }
+})
+
+//PATCH  /api/users/profile -> Update deck Library removing item
+router.patch("/profile/remove-deck", verifyToken, async (req, res, next) => {
+  const delDeck = req.body
+  try {
+    const response = await User.findByIdAndUpdate(req.payload._id, {$pull: {
+      deckLibrary: delDeck
     }
     }, {new:true});
 

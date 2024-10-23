@@ -23,11 +23,13 @@ router.post("/", verifyToken, async (req, res, next) =>{
   }
 })
 
-//POST MANY /api/flashcards/many -> Create new Flashcards
-router.post("/many", async (req,res,next) => {
+//DELETE MANY /api/flashcards/many -> Delete request Flashcards
+router.patch("/many", verifyToken, async (req,res,next) => {
+  const {ids} = req.body;
+
   try {
-    const response = await Flashcard.insertMany(req.body);
-    res.status(201).json(response);
+    await Flashcard.deleteMany({ _id: { $in: ids } });
+    res.sendStatus(202);
   } 
   catch (error) {
     next(error)
