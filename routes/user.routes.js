@@ -43,7 +43,7 @@ router.put("/profile", verifyToken, async (req, res, next) => {
   }
 })
 
-//PATCH  /api/users/profile -> Update deck Library adding item
+//PATCH  /api/users/profile/add-deck -> Update deck Library adding item
 router.patch("/profile/add-deck", verifyToken, async (req, res, next) => {
   const newDeck = req.body
   try {
@@ -59,7 +59,7 @@ router.patch("/profile/add-deck", verifyToken, async (req, res, next) => {
   }
 })
 
-//PATCH  /api/users/profile -> Update deck Library removing item
+//PATCH  /api/users/profile/remove-deck -> Update deck Library removing item
 router.patch("/profile/remove-deck", verifyToken, async (req, res, next) => {
   const delDeck = req.body
   try {
@@ -74,6 +74,25 @@ router.patch("/profile/remove-deck", verifyToken, async (req, res, next) => {
     next(error)  
   }
 })
+
+
+//PATCH  /api/users/profile/ -> Update deck Library updating deck learn
+router.patch("/profile/:deckId", verifyToken, async (req, res, next) => {
+  const {id, learnedFlashcard} = req.body
+  const currentDate = Date.now();
+  try {
+    console.log(id,learnedFlashcard);
+    const response = await User.findByIdAndUpdate(req.payload._id, 
+    {$set: { "deckLibrary.$[elem].passedFlashcards": learnedFlashcard, "deckLibrary.$[elem].previousLesson": currentDate} },
+    {arrayFilters: [{ "elem.deckId": id }], new:true});
+    
+    res.status(200).json(response);
+  } 
+  catch (error) {
+    next(error)  
+  }
+})
+
 
 
 //DELETE /api/users/delete -> Delete account from this user
