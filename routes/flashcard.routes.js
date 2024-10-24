@@ -37,7 +37,7 @@ router.patch("/many", verifyToken, async (req,res,next) => {
 })
 
 //GET /api/flashcards/:flashcardId -> Return a flashcard by Id
-router.get("/:flashcardId", async (req, res, next) =>{
+router.get("/:flashcardId", verifyToken, async (req, res, next) =>{
   try {
     const response = await Flashcard.findById(req.params.flashcardId);
     res.status(200).json(response);
@@ -66,10 +66,6 @@ router.put("/:flashcardId", verifyToken, async (req, res, next) =>{
     next(error)
   }
 })
-
-//TODO PATCH /api/flashcards/:flashcardId -> Update all flashcards details
-
-//TODO DELETE MANY FLASHCARDS
 
 //DELETE /api/flashcards/:flashcardId -> Delete this flashcard
 router.delete("/:flashcardId", verifyToken, async (req, res, next) =>{

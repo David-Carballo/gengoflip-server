@@ -6,7 +6,7 @@ const User = require("../models/User.model");
 //All deck routes
 
 //GET /api/decks/ -> Returns array with all db decks
-router.get("/", async (req, res, next)=>{
+router.get("/", verifyToken, async (req, res, next)=>{
   try {
       const response = await Deck.find()
       console.log("Decks recibidos!")
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next)=>{
 })
 
 //GET /api/decks/:deckId -> Returns object with deck datails and all flashcards(populate)
-router.get("/:deckId", async (req, res, next)=>{
+router.get("/:deckId", verifyToken, async (req, res, next)=>{
   try {
     const response = await Deck.findById(req.params.deckId).populate("owner").populate("flashcards");
     // console.log("Deck: ", response)
@@ -52,7 +52,7 @@ router.post("/", verifyToken, async (req, res, next)=>{
 })
 
 //PUT /api/decks/:deckId -> {deck object} -> Update all details of Deck
-router.put("/:deckId", async (req, res, next)=>{
+router.put("/:deckId", verifyToken, async (req, res, next)=>{
   const {deckName, description, tags, languages, savedCount, flashcards, imageUrl, owner} = req.body;
   try {
     const response = await Deck.findByIdAndUpdate(req.params.deckId, 
@@ -74,9 +74,8 @@ router.put("/:deckId", async (req, res, next)=>{
   }
 })
 
-//TODO check necessary PATCHES(add flashcard, update savedCount)
 //PATCH /api/decks/:deckId -> {++count} -> update saved count value
-router.patch("/:deckId", async (req, res, next)=>{
+router.patch("/:deckId", verifyToken, async (req, res, next)=>{
   const {savedCount} = req.body
   try {
     const response = await Deck.findByIdAndUpdate(req.params.deckId, {savedCount} ,{new: true})
@@ -88,8 +87,7 @@ router.patch("/:deckId", async (req, res, next)=>{
 })
 
 //DELETE /api/decks/:deckId -> Delete deck and all flashcards
-//TODO check owner????
-router.delete("/:deckId", async(req,res, next) => {
+router.delete("/:deckId", verifyToken, async(req,res, next) => {
   try {
     await Deck.findByIdAndDelete(req.params.deckId);
     res.sendStatus(202);  

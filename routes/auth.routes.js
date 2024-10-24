@@ -80,7 +80,6 @@ router.post("/login", async (req, res, next) => {
 
   try {
     // 2. Comprobar que el usuario existe
-    //todo login con username
     const foundUser = await User.findOne({ email });
     if (!foundUser) {
       res.status(400).json({ message: "Usuario no encontrado" });
@@ -100,7 +99,6 @@ router.post("/login", async (req, res, next) => {
     const payload = {
       _id: foundUser._id,
       email: foundUser.email
-      //todo username, propiedades que identifiquen al user o roles
     }
 
     const authToken = jwt.sign(payload, process.env.TOKEN_JWT, {
@@ -118,8 +116,6 @@ router.post("/login", async (req, res, next) => {
 //* Verify token
 // GET /api/auth/verify -> Verificar si el token es valido, cuando vuelva a la app
 router.get("/verify", verifyToken, (req, res)=>{
-  console.log(req.payload)
-
   res.status(200).json(req.payload);
 });
 
