@@ -2,8 +2,6 @@
 
 ## [See the App!](https://gengoflip.netlify.app/)
 
-![App Logo](your-image-logo-path-or-name)
-
 ## Description
 
 Our platform allows users to register, create, and manage their own sets of flashcards to practice vocabulary in a personalized way. Users can review their flashcards and improve their learning interactively.
